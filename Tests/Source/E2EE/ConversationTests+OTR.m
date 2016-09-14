@@ -2211,9 +2211,18 @@
     }];
     WaitForAllGroupsToBeEmpty(1.0);
     
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Did send request to delete client"];
+    self.mockTransportSession.responseGeneratorBlock = ^ ZMTransportResponse *(ZMTransportRequest *__unused request) {
+        if ([request.path.pathComponents containsObject:@"clients"] && request.method == ZMMethodDELETE) {
+            [expectation fulfill];
+        }
+        return nil;
+    };
+    
     [self.userSession performChanges:^{
         [self.userSession deleteClients:@[notSelfClient] withCredentials:[ZMEmailCredentials credentialsWithEmail:SelfUserEmail password:SelfUserPassword]];
     }];
+    XCTAssertTrue([self waitForCustomExpectationsWithTimeout:0.5]);
     WaitForAllGroupsToBeEmpty(1.0);
     
     // then
