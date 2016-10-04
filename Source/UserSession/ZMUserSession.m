@@ -508,7 +508,7 @@ ZM_EMPTY_ASSERTING_INIT()
             NSLog(@"actualToken is not nil");
             NSData *deviceToken = self.managedObjectContext.pushKitToken.deviceToken;
             NSLog(@"deviceToken: %@", deviceToken);
-            if (![actualToken isEqualToData:deviceToken]){
+            if (![actualToken isEqual:deviceToken]){
                 NSLog(@"refresh push token");
                 self.managedObjectContext.pushKitToken = nil;
                 [self setPushKitToken:actualToken];
