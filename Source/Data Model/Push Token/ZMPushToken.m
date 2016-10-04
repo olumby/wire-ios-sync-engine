@@ -203,6 +203,8 @@ static NSString * const PushKitTokenDataKey = @"ZMPushTokenData";
 
 - (ZMPushToken *)pushKitToken;
 {
+    NSLog(@"enter >>> pushKitToken");
+    
     NSData *data = [self persistentStoreMetadataForKey:PushKitTokenKey];
     if (data == nil) {
         return nil;
@@ -221,6 +223,8 @@ static NSString * const PushKitTokenDataKey = @"ZMPushTokenData";
     
     self.userInfo[PushKitTokenDataKey] = data;
     self.userInfo[PushKitTokenKey] = token;
+    
+    NSLog(@"leave <<< pushKitToken");
     
     return token;
 }

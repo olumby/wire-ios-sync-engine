@@ -503,9 +503,16 @@ ZM_EMPTY_ASSERTING_INIT()
     [self.managedObjectContext performGroupedBlock:^{
         // Refresh the Voip token if needed
         NSData *actualToken = self.pushRegistrant.pushToken;
-        if (actualToken != nil && ![actualToken isEqualToData:self.managedObjectContext.pushKitToken.deviceToken]){
-            self.managedObjectContext.pushKitToken = nil;
-            [self setPushKitToken:actualToken];
+        NSLog(@"actualToken: %@", actualToken);
+        if (actualToken != nil) {
+            NSLog(@"actualToken is not nil");
+            NSData *deviceToken = self.managedObjectContext.pushKitToken.deviceToken;
+            NSLog(@"deviceToken: %@", deviceToken);
+            if (![actualToken isEqualToData:deviceToken]){
+                NSLog(@"refresh push token");
+                self.managedObjectContext.pushKitToken = nil;
+                [self setPushKitToken:actualToken];
+            }
         }
         
         // Request the current token, the rest is taken care of
